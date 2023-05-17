@@ -1,6 +1,6 @@
 # telkom_sehat
 
-Mobile App for TelkomSehat Web App.
+Mobile App for TelkomSehat Web Application.
 
 ## Getting Started
 
