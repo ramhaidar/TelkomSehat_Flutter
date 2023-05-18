@@ -1,0 +1,5 @@
+icons_launcher:
+  image_path: "assets/TelkomSehat.png"
+  platforms:
+    android:
+      enable: true

@@ -4,21 +4,19 @@ import 'package:line_icons/line_icons.dart';
 
 import 'mainScreen.dart';
 
-class MahasiswaScreen extends StatefulWidget {
-  const MahasiswaScreen({super.key});
+class ParamedisScreen extends StatefulWidget {
+  const ParamedisScreen({super.key});
 
   @override
-  State<MahasiswaScreen> createState() => _MahasiswaScreenState();
+  State<ParamedisScreen> createState() => _ParamedisScreenState();
 }
 
-class _MahasiswaScreenState extends State<MahasiswaScreen> {
+class _ParamedisScreenState extends State<ParamedisScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> buildScreens() {
       return [
         const DashboardScreen(),
-        const ReservasiScreen(),
-        const KonsultasiScreen(),
         const PenjemputanScreen(),
       ];
     }
@@ -29,20 +27,6 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
           // icon: Image.asset('assets/navBarIcons/home.png'),
           icon: const Icon(LineIcons.home),
           title: ("Dashboard"),
-          activeColorPrimary: Colors.blue,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          // icon: Image.asset('assets/navBarIcons/dashboard.png'),
-          icon: const Icon(LineIcons.calendar),
-          title: ("Reservasi"),
-          activeColorPrimary: Colors.blue,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          // icon: Image.asset('assets/navBarIcons/konsultasi.png'),
-          icon: const Icon(LineIcons.comment),
-          title: ("Konsultasi"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),

@@ -4,14 +4,14 @@ import 'package:line_icons/line_icons.dart';
 
 import 'mainScreen.dart';
 
-class MahasiswaScreen extends StatefulWidget {
-  const MahasiswaScreen({super.key});
+class DokterScreen extends StatefulWidget {
+  const DokterScreen({super.key});
 
   @override
-  State<MahasiswaScreen> createState() => _MahasiswaScreenState();
+  State<DokterScreen> createState() => _DokterScreenState();
 }
 
-class _MahasiswaScreenState extends State<MahasiswaScreen> {
+class _DokterScreenState extends State<DokterScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> buildScreens() {
@@ -19,7 +19,6 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
         const DashboardScreen(),
         const ReservasiScreen(),
         const KonsultasiScreen(),
-        const PenjemputanScreen(),
       ];
     }
 
@@ -43,13 +42,6 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
           // icon: Image.asset('assets/navBarIcons/konsultasi.png'),
           icon: const Icon(LineIcons.comment),
           title: ("Konsultasi"),
-          activeColorPrimary: Colors.blue,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          // icon: Image.asset('assets/navBarIcons/reservasi.png'),
-          icon: const Icon(LineIcons.ambulance),
-          title: ("Penjemputan"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),

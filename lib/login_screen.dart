@@ -1,15 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:line_icons/line_icons.dart';
 
-import 'mahasiswa/MahasiswaScreen.dart';
+import 'paramedis/paramedisScreen.dart';
+import 'dokter/dokterScreen.dart';
+import 'mahasiswa/mahasiswaScreen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Future.delayed(const Duration(milliseconds: 0), () {});
-    // FlutterNativeSplash.remove();
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    isObscured = false;
+  }
+
+  late bool isObscured;
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void checkCredentials() {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    // Ganti dengan list 2 dimensi yang berisi pasangan username, password, dan role yang valid
+    List validCredentials = [
+      ['haidarx', 'haidarx123', 'mahasiswa'],
+      ['fanie', 'fanie123', 'doktor'],
+      ['tapir', 'tapir123', 'paramedis'],
+    ];
+
+    String role = '';
+    for (var credential in validCredentials) {
+      if (credential[0] == username && credential[1] == password) {
+        role = credential[2];
+        break;
+      }
+    }
+
+    if (role != '') {
+      if (role == 'mahasiswa') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MahasiswaScreen()),
+        );
+      } else if (role == 'doktor') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DokterScreen()),
+        );
+      } else if (role == 'paramedis') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ParamedisScreen()),
+        );
+      }
+    } else {
+      // Tampilkan pesan error jika username atau password salah
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const HSLColor.fromAHSL(1, 201, 0.89, 0.96).toColor(),
       body: Container(
@@ -60,58 +119,74 @@ class LoginScreen extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.only(top: 5),
-                    child: const Text(
+                    child: Text(
                       "Masuk ke Akun Anda",
-                      style: TextStyle(
-                        color: Color(0xff012970),
+                      style: GoogleFonts.montserrat(
+                        color: const Color(0xff012970),
                         fontSize: 16,
-                        fontFamily: "Montserrat",
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.only(bottom: 13),
-                    child: const Text(
+                    child: Text(
                       "Masukkan Username & Password untuk masuk",
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: Colors.black,
                         fontSize: 10,
-                        fontFamily: "Montserrat",
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Username',
-                        border: OutlineInputBorder(),
+                  TextField(
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                      prefixIcon: Icon(LineIcons.at),
+                    ),
+                  ),
+                  const SizedBox(height: 12.5),
+                  TextField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.text,
+                    obscureText: !isObscured,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(!isObscured
+                            ? LineIcons.eyeSlashAlt
+                            : LineIcons.eye),
+                        onPressed: () {
+                          setState(() {
+                            isObscured = !isObscured;
+                          });
+                        },
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: const TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        border: OutlineInputBorder(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        checkCredentials();
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const MahasiswaScreen()),
+                        // );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue, // warna background
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MahasiswaScreen()),
-                      );
-                    },
-                    child: const Text('Login'),
                   ),
                 ],
               ),
