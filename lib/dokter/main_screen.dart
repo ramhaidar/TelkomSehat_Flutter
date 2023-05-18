@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../custom_app_bar.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -31,11 +33,9 @@ class ReservasiScreen extends StatefulWidget {
 class _ReservasiScreenState extends State<ReservasiScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reservasi"),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: CustomAppBar(),
+      body: Center(
         child: Text("Welcome to the Reservasi Screen!"),
       ),
     );

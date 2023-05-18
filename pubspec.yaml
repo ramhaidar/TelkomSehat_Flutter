@@ -66,6 +66,7 @@ flutter:
     - assets/navBarIcons/konsultasi.png
     - assets/navBarIcons/reservasi.png
     - assets/TelkomSehat.png
+    - assets/profile/haidarx.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

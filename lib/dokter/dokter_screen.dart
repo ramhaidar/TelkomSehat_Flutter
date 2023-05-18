@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:line_icons/line_icons.dart';
 
-import 'mainScreen.dart';
+import 'main_screen.dart';
 
-class ParamedisScreen extends StatefulWidget {
-  const ParamedisScreen({super.key});
+class DokterScreen extends StatefulWidget {
+  const DokterScreen({super.key});
 
   @override
-  State<ParamedisScreen> createState() => _ParamedisScreenState();
+  State<DokterScreen> createState() => _DokterScreenState();
 }
 
-class _ParamedisScreenState extends State<ParamedisScreen> {
+class _DokterScreenState extends State<DokterScreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> buildScreens() {
       return [
         const DashboardScreen(),
-        const PenjemputanScreen(),
+        const ReservasiScreen(),
+        const KonsultasiScreen(),
       ];
     }
 
@@ -31,9 +32,16 @@ class _ParamedisScreenState extends State<ParamedisScreen> {
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          // icon: Image.asset('assets/navBarIcons/reservasi.png'),
-          icon: const Icon(LineIcons.ambulance),
-          title: ("Penjemputan"),
+          // icon: Image.asset('assets/navBarIcons/dashboard.png'),
+          icon: const Icon(LineIcons.calendar),
+          title: ("Reservasi"),
+          activeColorPrimary: Colors.blue,
+          inactiveColorPrimary: Colors.grey,
+        ),
+        PersistentBottomNavBarItem(
+          // icon: Image.asset('assets/navBarIcons/konsultasi.png'),
+          icon: const Icon(LineIcons.comment),
+          title: ("Konsultasi"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),

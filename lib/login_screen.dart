@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quickalert/quickalert.dart';
 
-import 'paramedis/paramedisScreen.dart';
-import 'dokter/dokterScreen.dart';
-import 'mahasiswa/mahasiswaScreen.dart';
+import 'paramedis/paramedis_screen.dart';
+import 'dokter/dokter_screen.dart';
+import 'mahasiswa/aaa_mahasiswa_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -63,6 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } else {
       // Tampilkan pesan error jika username atau password salah
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: 'Username and/or Password Incorrect!',
+        backgroundColor: Colors.white60,
+        barrierColor: Colors.black.withOpacity(0.85),
+      );
     }
   }
 
@@ -73,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: const HSLColor.fromAHSL(1, 201, 0.89, 0.96).toColor(),
       body: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 50,
+          horizontal: 25,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
