@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'paramedis/paramedis_screen.dart';
 import 'dokter/dokter_screen.dart';
@@ -26,54 +30,45 @@ class _LoginScreenState extends State<LoginScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void checkCredentials() {
-    String username = usernameController.text;
-    String password = passwordController.text;
+  Future<void> loginAction(String username, String password, BuildContext context) async {
+    final response = await http.post(
+      Uri.parse('http://192.168.1.3:8000/api/login'),
+      // Uri.parse('http://yntkts.ddns.net:8000/api/login'),
+      body: {
+        'username': username,
+        'password': password,
+      },
+    );
 
-    // Ganti dengan list 2 dimensi yang berisi pasangan username, password, dan role yang valid
-    List validCredentials = [
-      ['haidarx', 'haidarx123', 'mahasiswa'],
-      ['fanie', 'fanie123', 'doktor'],
-      ['tapir', 'tapir123', 'paramedis'],
-    ];
-
-    String role = '';
-    for (var credential in validCredentials) {
-      if (credential[0] == username && credential[1] == password) {
-        role = credential[2];
-        break;
-      }
+    String role;
+    if (response.statusCode == 200) {
+      role = jsonDecode(response.body)['role'];
+      final token = jsonDecode(response.body)['token'];
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token.toString());
+    } else {
+      throw Exception();
     }
 
-    if (role != '') {
-      if (role == 'mahasiswa') {
+    if (context.mounted) {
+      if (role == 'Mahasiswa') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const MahasiswaScreen()),
         );
-      } else if (role == 'doktor') {
+      } else if (role == 'Dokter') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const DokterScreen()),
         );
-      } else if (role == 'paramedis') {
+      } else if (role == 'Paramedis') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const ParamedisScreen()),
         );
       }
-    } else {
-      // Tampilkan pesan error jika username atau password salah
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.error,
-        text: 'Username and/or Password Incorrect!',
-        backgroundColor: Colors.white60,
-        barrierColor: Colors.black.withOpacity(0.85),
-      );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       "Masuk ke Akun Anda",
                       style: GoogleFonts.montserrat(
                         color: const Color(0xff012970),
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -142,8 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       "Masukkan Username & Password untuk masuk",
                       style: GoogleFonts.montserrat(
                         color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w300,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -176,13 +171,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        checkCredentials();
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const MahasiswaScreen()),
-                        // );
+                      onPressed: () async {
+                        try {
+                          await loginAction(
+                              usernameController.text, passwordController.text, context);
+                        } catch (e) {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.error,
+                            text: 'Username and/or Password Incorrect!',
+                            backgroundColor: Colors.white60,
+                            barrierColor: Colors.black.withOpacity(0.85),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue, // warna background

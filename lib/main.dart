@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:telkom_sehat/login_screen.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -68,6 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     initialization();
+    localeInitialization();
+  }
+
+  void localeInitialization() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await initializeDateFormatting('id', null);
   }
 
   void initialization() async {
@@ -75,10 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
     // ignore_for_file: avoid_print
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(
+      const Duration(milliseconds: 100),
+    );
     FlutterNativeSplash.remove();
   }
-
 
   @override
   Widget build(BuildContext context) {

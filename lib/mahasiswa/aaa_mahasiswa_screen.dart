@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:telkom_sehat/custom_app_bar.dart';
 
-import '../custom_app_bar.dart';
 import 'dashboard_mahasiswa.dart';
 import 'konsultasi_mahasiswa.dart';
 import 'penjemputan_mahasiswa.dart';
@@ -16,14 +16,35 @@ class MahasiswaScreen extends StatefulWidget {
 }
 
 class _MahasiswaScreenState extends State<MahasiswaScreen> {
+  late PersistentTabController navBarController;
+
+  @override
+  void initState() {
+    super.initState();
+    navBarController = PersistentTabController(initialIndex: 0);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // List<Widget> buildScreens() {
+    //   return [
+    //     DashboardScreen(navBarController: navBarController, buildScreensLength: 4),
+    //     ReservasiScreen(navBarController: navBarController, buildScreensLength: 4),
+    //     KonsultasiScreen(navBarController: navBarController, buildScreensLength: 4),
+    //     PenjemputanScreen(navBarController: navBarController, buildScreensLength: 4),
+    //   ];
+    // }
+
     List<Widget> buildScreens() {
       return [
-        const DashboardScreen(),
-        const ReservasiScreen(),
-        const KonsultasiScreen(),
-        const PenjemputanScreen(),
+        DashboardScreen(
+            navBarController: navBarController, buildScreensLength: 4),
+        ReservasiScreen(
+            navBarController: navBarController, buildScreensLength: 4),
+        KonsultasiScreen(
+            navBarController: navBarController, buildScreensLength: 4),
+        PenjemputanScreen(
+            navBarController: navBarController, buildScreensLength: 4),
       ];
     }
 
@@ -60,25 +81,28 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
       ];
     }
 
-    PersistentTabController navBarController;
-
-    navBarController = PersistentTabController(initialIndex: 0);
-
     return Scaffold(
       appBar: const CustomAppBar(),
       body: PersistentTabView(
         context,
+        navBarHeight: 75,
+        padding: const NavBarPadding.all(7),
+        popAllScreensOnTapAnyTabs: true,
+        hideNavigationBar: false,
         controller: navBarController,
         screens: buildScreens(),
         items: navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Colors.white, // Default is Colors.white.
-        handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset:
-            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-        stateManagement: true, // Default is true.
-        hideNavigationBarWhenKeyboardShows:
-            true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+        backgroundColor: Colors.white,
+        // Default is Colors.white.
+        handleAndroidBackButtonPress: true,
+        // Default is true.
+        resizeToAvoidBottomInset: true,
+        // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+        stateManagement: true,
+        // Default is true.
+        hideNavigationBarWhenKeyboardShows: true,
+        // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
         decoration: NavBarDecoration(
           borderRadius: BorderRadius.circular(10.0),
           colorBehindNavBar: Colors.white,
@@ -94,8 +118,13 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
           // Screen transition animation on change of selected tab.
           animateTabTransition: true,
           curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 60),
         ),
+        onItemSelected: (index) {
+          setState(() {
+            navBarController.index = index; // THIS IS CRITICAL!! Don't miss it!
+          });
+        },
         navBarStyle:
             NavBarStyle.style1, // Choose the nav bar style with this property.
       ),

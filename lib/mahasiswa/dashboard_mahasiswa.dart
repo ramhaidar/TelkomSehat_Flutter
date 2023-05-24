@@ -1,5 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:telkom_sehat/custom_app_bar.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:swipe/swipe.dart';
 
 class AppointmentCard extends StatelessWidget {
   final int appointmentNumber;
@@ -40,12 +46,13 @@ class AppointmentCard extends StatelessWidget {
               children: [
                 Container(
                   margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     color: Colors.white,
                   ),
-                  child: Text(
+                  child: AutoSizeText(
                     date,
                     style: const TextStyle(
                       fontSize: 16,
@@ -56,8 +63,9 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: Text(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  child: AutoSizeText(
                     time,
                     style: const TextStyle(
                       fontSize: 18,
@@ -68,8 +76,9 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: Text(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  child: AutoSizeText(
                     doctorName,
                     style: const TextStyle(
                       fontSize: 18,
@@ -80,8 +89,9 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4.0),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: Text(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                  child: AutoSizeText(
                     specialist,
                     style: const TextStyle(
                       fontSize: 16,
@@ -98,117 +108,354 @@ class AppointmentCard extends StatelessWidget {
   }
 }
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+// void waktu() async {
+//   var now = DateTime.now();
+//   var formatter = DateFormat('EEEE, dd-MM-yyyy', 'id');
+//   String formattedDate = formatter.format(now);
+// }
+
+class DashboardScreen extends StatefulWidget {
+  final PersistentTabController navBarController;
+  final int buildScreensLength;
+
+  const DashboardScreen(
+      {super.key,
+      required this.navBarController,
+      required this.buildScreensLength});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-            child: Text(
-              "Section Penjemputan",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          // Implementasikan bagian penjemputan di sini
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: Colors.blue,
-            ),
-            height: 80,
-            width: double.infinity,
-            child: const Center(
-              child: Icon(
-                Icons.person,
-                size: 48,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-            child: Text(
-              "Upcoming Appointment",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          // Implementasikan bagian upcoming appointment di sini
-          SizedBox(
-            height: 200,
-            child: PageView(
-              pageSnapping: false,
-              allowImplicitScrolling: true,
-              padEnds: false,
-              controller: PageController(viewportFraction: 0.8),
-              children: const [
-                AppointmentCard(
-                  appointmentNumber: 1,
-                  date: "12 Tuesday",
-                  time: "10:00 AM",
-                  doctorName: "Dr. John Doe",
-                  specialist: "Cardiologist",
+      body: Swipe(
+        verticalMaxWidthThreshold: 50,
+        verticalMinDisplacement: 100,
+        verticalMinVelocity: 300,
+        horizontalMaxHeightThreshold: 500,
+        horizontalMinDisplacement: 0,
+        horizontalMinVelocity: 0,
+        onSwipeLeft: () => {
+          if (widget.navBarController.index != widget.buildScreensLength - 1)
+            {
+              widget.navBarController
+                  .jumpToTab(widget.navBarController.index + 1),
+            }
+        },
+        onSwipeRight: () => {
+          if (widget.navBarController.index > 0)
+            {
+              widget.navBarController
+                  .jumpToTab(widget.navBarController.index - 1),
+            }
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: const Color(0xFFEDF8FE),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.5, horizontal: 7.5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.25),
+                                    spreadRadius: 1.23,
+                                    blurRadius: 25,
+                                    offset: const Offset(0, 0),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: SizedBox(
+                                  height: 200,
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.5),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          AutoSizeText(
+                                            'TelkomSehat Siap\nMelayani Anda',
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xFF012970),
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.all(10),
+                                          ),
+                                          Expanded(
+                                            child: Image.asset(
+                                              'assets/dashboard.png',
+                                              fit: BoxFit.scaleDown,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.25),
+                                    spreadRadius: 1.23,
+                                    blurRadius: 25,
+                                    offset: const Offset(0, 0),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: SizedBox(
+                                  height: 200,
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(30),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                AutoSizeText(
+                                                  'Waktu Sekarang',
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.montserrat(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        const Color(0xFF012970),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                CountdownTimer(
+                                                  endTime: DateTime.now()
+                                                          .millisecondsSinceEpoch +
+                                                      1000 * 60 * 60 * 24,
+                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
+                                                  widgetBuilder: (_, time) {
+                                                    return AutoSizeText(
+                                                      DateFormat('HH:mm:ss')
+                                                          .format(
+                                                        DateTime.now(),
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          GoogleFonts.openSans(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: const Color(
+                                                            0xFF012970),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                CountdownTimer(
+                                                  endTime: DateTime.now()
+                                                          .millisecondsSinceEpoch +
+                                                      1000 * 60 * 60 * 24,
+                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
+                                                  widgetBuilder: (_, time) {
+                                                    return AutoSizeText(
+                                                      DateFormat(
+                                                              'EEEE, dd-MM-yyyy',
+                                                              'id')
+                                                          .format(
+                                                        DateTime.now(),
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          GoogleFonts.openSans(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: const Color(
+                                                            0xFF012970),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.25),
+                                spreadRadius: 1.23,
+                                blurRadius: 25,
+                                offset: const Offset(0, 0),
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: SizedBox(
+                              height: 200,
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 30, bottom: 15),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            AutoSizeText(
+                                              'Jumlah Reservasi',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color(0xFF012970),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFFFECDF),
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: const Icon(
+                                              CupertinoIcons.group,
+                                              size: 50,
+                                              color: Color(0xFFFF771D),
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              AutoSizeText(
+                                                "1",
+                                                textAlign: TextAlign.left,
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      const Color(0xFF012970),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                                child: AutoSizeText(
+                                                  "from 8 total",
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        const Color(0xFF012970),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(bottom: 10),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                AppointmentCard(
-                  appointmentNumber: 2,
-                  date: "14 Thursday",
-                  time: "2:30 PM",
-                  doctorName: "Dr. Jane Smith",
-                  specialist: "Dermatologist",
-                ),
-                AppointmentCard(
-                  appointmentNumber: 3,
-                  date: "16 Saturday",
-                  time: "4:00 PM",
-                  doctorName: "Dr. David Johnson",
-                  specialist: "Orthopedic Surgeon",
-                ),
-              ],
-            ),
-          ),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-            child: Text(
-              "Total Reservasi",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          // Implementasikan bagian total reservasi di sini
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: Colors.green,
-            ),
-            height: 80,
-            width: double.infinity,
-            child: const Center(
-              child: Text(
-                "Total Reservasi: 10",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
