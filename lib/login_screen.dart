@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:line_icons/line_icons.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'paramedis/paramedis_screen.dart';
 import 'dokter/dokter_screen.dart';
 import 'mahasiswa/aaa_mahasiswa_screen.dart';
+import 'paramedis/paramedis_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,28 +26,48 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   late bool isObscured;
+  late bool stayLoggedIn = false;
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future<void> loginAction(String username, String password, BuildContext context) async {
-    final response = await http.post(
-      Uri.parse('http://192.168.1.3:8000/api/login'),
-      // Uri.parse('http://yntkts.ddns.net:8000/api/login'),
-      body: {
-        'username': username,
-        'password': password,
-      },
-    );
+  Future<void> loginAction(
+      String username, String password, BuildContext context) async {
+    dynamic response;
+    try {
+      response = await http.post(
+        Uri.parse('http://yntkts.ddns.net:8000/api/login'),
+        body: {
+          'username': username,
+          'password': password,
+        },
+      ).timeout(const Duration(milliseconds: 500));
+    } catch (e) {
+      response = await http.post(
+        Uri.parse('http://192.168.3.2:8000/api/login'),
+        body: {
+          'username': username,
+          'password': password,
+        },
+      ).timeout(const Duration(milliseconds: 500));
+    }
 
     String role;
     if (response.statusCode == 200) {
       role = jsonDecode(response.body)['role'];
       final token = jsonDecode(response.body)['token'];
+      final stayloggedintoken = jsonDecode(response.body)['stayloggedintoken'];
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+
       await prefs.setString('token', token.toString());
+      if (stayLoggedIn) {
+        await prefs.setString(
+            'stayloggedintoken', stayloggedintoken.toString());
+        await prefs.setString('role', role.toString());
+      }
     } else {
-      throw Exception();
+      throw Exception("Failed to Login.");
     }
 
     if (context.mounted) {
@@ -168,13 +188,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 12.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Checkbox(
+                          value: stayLoggedIn,
+                          onChanged: (value) {
+                            setState(() {
+                              stayLoggedIn = value!;
+                            });
+                          },
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              stayLoggedIn = !stayLoggedIn;
+                            });
+                          },
+                          child: Text(
+                            'Stay Logged In',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: ElevatedButton(
                       onPressed: () async {
                         try {
-                          await loginAction(
-                              usernameController.text, passwordController.text, context);
+                          await loginAction(usernameController.text,
+                              passwordController.text, context);
                         } catch (e) {
                           QuickAlert.show(
                             context: context,

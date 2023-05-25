@@ -1,8 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+import 'login_screen.dart';
+
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  bool _isPopupMenuOpen = false;
+
+  final List<PopupMenuEntry<dynamic>> menuItems = [
+    PopupMenuItem<dynamic>(
+      value: 'Details',
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Haidaruddin Muhammad Ramdhan',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.openSans(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              '1301204459',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.openSans(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    const PopupMenuItem<dynamic>(
+      value: 'logout',
+      child: Text('Log Out'),
+    ),
+  ];
+
+  Future<void> handleMenuSelection(BuildContext context, dynamic value) async {
+    switch (value) {
+      case 'logout':
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        prefs.remove('stayloggedintoken');
+        prefs.remove('role');
+
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +103,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () {
-                // Tampilkan menu di sini
-              },
+            PopupMenuButton<dynamic>(
+              elevation: 25,
+              offset: const Offset(0, 65),
+              onSelected: (value) => handleMenuSelection(context, value),
+              itemBuilder: (BuildContext context) => menuItems,
               child: const CircleAvatar(
-                // backgroundImage: AssetImage('assets/profile/haidarx.jpg'),
                 backgroundImage:
                     NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
               ),
@@ -53,7 +118,4 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

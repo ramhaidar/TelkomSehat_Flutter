@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telkom_sehat/login_screen.dart';
+import 'package:telkom_sehat/paramedis/paramedis_screen.dart';
+
+import 'dokter/dokter_screen.dart';
+import 'mahasiswa/aaa_mahasiswa_screen.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -67,11 +72,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late Future<SharedPreferences> _prefsFuture;
+
   @override
   void initState() {
     super.initState();
-    initialization();
+    _prefsFuture = SharedPreferences.getInstance();
+
     localeInitialization();
+
+    initialization();
   }
 
   void localeInitialization() async {
@@ -99,6 +109,28 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    return const LoginScreen();
+    return FutureBuilder<SharedPreferences>(
+      future: _prefsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final prefs = snapshot.data!;
+          if (prefs.get('stayloggedintoken') != null &&
+              prefs.get('role') != null) {
+            if (prefs.get('role') == 'Mahasiswa') {
+              return const MahasiswaScreen();
+            } else if (prefs.get('role') == 'Dokter') {
+              return const DokterScreen();
+            } else if (prefs.get('role') == 'Paramedis') {
+              return const ParamedisScreen();
+            }
+          }
+          return const LoginScreen();
+        }
+      },
+    );
   }
 }
