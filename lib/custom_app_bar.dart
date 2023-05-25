@@ -89,7 +89,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 5, right: 20),
+                  padding: const EdgeInsets.only(left: 12.5, top: 5, right: 20),
                   child: Image.asset(
                     'assets/TelkomSehat.png',
                     fit: BoxFit.contain,
@@ -104,13 +104,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             PopupMenuButton<dynamic>(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.5),
+              ),
               elevation: 25,
               offset: const Offset(0, 65),
               onSelected: (value) => handleMenuSelection(context, value),
               itemBuilder: (BuildContext context) => menuItems,
-              child: const CircleAvatar(
-                backgroundImage:
-                    NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 12.5),
+                child: CircleAvatar(
+                  backgroundImage:
+                      NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
+                ),
               ),
             ),
           ],
