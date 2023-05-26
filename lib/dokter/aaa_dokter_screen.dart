@@ -3,19 +3,18 @@ import 'package:line_icons/line_icons.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:telkom_sehat/custom_app_bar.dart';
 
-import 'dashboard_mahasiswa.dart';
-import 'konsultasi_mahasiswa.dart';
-import 'penjemputan_mahasiswa.dart';
-import 'reservasi_mahasiswa.dart';
+import 'dashboard_dokter.dart';
+import 'reservasi_dokter.dart';
+import 'konsultasi_dokter.dart';
 
-class MahasiswaScreen extends StatefulWidget {
-  const MahasiswaScreen({super.key});
+class DokterScreen extends StatefulWidget {
+  const DokterScreen({super.key});
 
   @override
-  State<MahasiswaScreen> createState() => _MahasiswaScreenState();
+  State<DokterScreen> createState() => _DokterScreenState();
 }
 
-class _MahasiswaScreenState extends State<MahasiswaScreen> {
+class _DokterScreenState extends State<DokterScreen> {
   late PersistentTabController navBarController;
 
   @override
@@ -29,13 +28,11 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
     List<Widget> buildScreens() {
       return [
         DashboardScreen(
-            navBarController: navBarController, buildScreensLength: 4),
+            navBarController: navBarController, buildScreensLength: 3),
         ReservasiScreen(
-            navBarController: navBarController, buildScreensLength: 4),
+            navBarController: navBarController, buildScreensLength: 3),
         KonsultasiScreen(
-            navBarController: navBarController, buildScreensLength: 4),
-        PenjemputanScreen(
-            navBarController: navBarController, buildScreensLength: 4),
+            navBarController: navBarController, buildScreensLength: 3),
       ];
     }
 
@@ -59,13 +56,6 @@ class _MahasiswaScreenState extends State<MahasiswaScreen> {
           // icon: Image.asset('assets/navBarIcons/konsultasi.png'),
           icon: const Icon(LineIcons.comment),
           title: ("Konsultasi"),
-          activeColorPrimary: Colors.blue,
-          inactiveColorPrimary: Colors.grey,
-        ),
-        PersistentBottomNavBarItem(
-          // icon: Image.asset('assets/navBarIcons/reservasi.png'),
-          icon: const Icon(LineIcons.ambulance),
-          title: ("Penjemputan"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),

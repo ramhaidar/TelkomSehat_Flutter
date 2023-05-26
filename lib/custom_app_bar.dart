@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu_custom/focused_menu.dart';
+import 'package:focused_menu_custom/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,8 +17,6 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  bool _isPopupMenuOpen = false;
-
   final List<PopupMenuEntry<dynamic>> menuItems = [
     PopupMenuItem<dynamic>(
       value: 'Details',
@@ -103,20 +103,71 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
               ],
             ),
-            PopupMenuButton<dynamic>(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.5),
-              ),
-              elevation: 25,
-              offset: const Offset(0, 65),
-              onSelected: (value) => handleMenuSelection(context, value),
-              itemBuilder: (BuildContext context) => menuItems,
-              child: const Padding(
-                padding: EdgeInsets.only(right: 12.5),
-                child: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
+            FocusedMenuHolder(
+              menuWidth: MediaQuery.of(context).size.width * 0.55,
+              blurSize: 1.23,
+              menuItemExtent: 35,
+              menuBoxDecoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              duration: const Duration(milliseconds: 100),
+              animateMenuItems: true,
+              blurBackgroundColor: Colors.black54,
+              openWithTap: true,
+              menuOffset: 30,
+              bottomOffsetHeight: 80.0,
+              menuItems: <FocusedMenuItem>[
+                FocusedMenuItem(
+                  title: Text(
+                    'Haidaruddin Muhammad Ramdhan',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leadingIcon: const Icon(null),
+                  trailingIcon: const Icon(null),
+                  onPressed: () {},
                 ),
+                FocusedMenuItem(
+                  title: Text(
+                    '1301204459',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leadingIcon: const Icon(null),
+                  trailingIcon: const Icon(null),
+                  onPressed: () {},
+                ),
+                FocusedMenuItem(
+                  title: const Text("Logout"),
+                  trailingIcon: const Icon(Icons.logout),
+                  leadingIcon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    prefs.remove('stayloggedintoken');
+                    prefs.remove('role');
+
+                    if (context.mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    }
+                  },
+                ),
+              ],
+              onPressed: () {},
+              child: const CircleAvatar(
+                backgroundImage:
+                    NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
               ),
             ),
           ],

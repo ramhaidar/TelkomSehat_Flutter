@@ -7,9 +7,9 @@ import 'package:line_icons/line_icons.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'dokter/dokter_screen.dart';
+import 'dokter/aaa_dokter_screen.dart';
 import 'mahasiswa/aaa_mahasiswa_screen.dart';
-import 'paramedis/paramedis_screen.dart';
+import 'package:telkom_sehat/paramedis/aaa_paramedis_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> loginAction(
       String username, String password, BuildContext context) async {
-    dynamic response;
+    http.Response response;
     try {
       response = await http.post(
         Uri.parse('http://yntkts.ddns.net:8000/api/login'),
@@ -41,7 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
           'username': username,
           'password': password,
         },
-      ).timeout(const Duration(milliseconds: 500));
+      ).timeout(
+        const Duration(milliseconds: 1000),
+      );
     } catch (e) {
       response = await http.post(
         Uri.parse('http://192.168.3.2:8000/api/login'),
@@ -49,7 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
           'username': username,
           'password': password,
         },
-      ).timeout(const Duration(milliseconds: 500));
+      ).timeout(
+        const Duration(milliseconds: 1000),
+      );
     }
 
     String role;
@@ -65,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await prefs.setString(
             'stayloggedintoken', stayloggedintoken.toString());
         await prefs.setString('role', role.toString());
+        await prefs.setString('username', username.toString());
       }
     } else {
       throw Exception("Failed to Login.");
