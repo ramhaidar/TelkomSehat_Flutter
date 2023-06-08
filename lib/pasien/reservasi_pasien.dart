@@ -24,7 +24,7 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Swipe(
@@ -52,9 +52,106 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
             width: double.infinity,
             height: double.infinity,
             color: const Color(0xFFEDF8FE),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 22.5, horizontal: 25),
-              child: Text("TEST"),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Reservasi",
+                          style: TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.pink[50],
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Colors.pink,
+                                size: 20,
+                              ),
+                              SizedBox(width: 2),
+                              Text(
+                                "Buat Reservasi",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: "Cari...",
+                        hintStyle: TextStyle(color: Colors.grey.shade600),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.grey.shade600,
+                          size: 20,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        contentPadding: const EdgeInsets.all(8),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(color: Colors.grey.shade100),
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      // Data dummy
+                      final data = {
+                        'dokter': 'Dr. John Doe',
+                        'spesialis': 'Dokter Umum',
+                        'tanggal': '12 Juni 2023',
+                        'jam': '10:00 - 11:00',
+                        'keluhan': 'Sakit kepala',
+                        'status': 'Terkonfirmasi',
+                      };
+
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Card(
+                          child: ListTile(
+                            title: Text('Nama:${data['dokter']}'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Spesialis: ${data['spesialis']}'),
+                                Text('Tanggal: ${data['tanggal']}'),
+                                Text('Jam: ${data['jam']}'),
+                                Text('Keluhan: ${data['keluhan']}'),
+                                Text('Status: ${data['status']}'),
+                              ],
+                            ),
+                            trailing: const Text('Batal'),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
