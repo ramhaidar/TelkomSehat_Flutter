@@ -7,113 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:swipe/swipe.dart';
 
-class AppointmentCard extends StatelessWidget {
-  final int appointmentNumber;
-  final String date;
-  final String time;
-  final String doctorName;
-  final String specialist;
-
-  const AppointmentCard({
-    super.key,
-    required this.appointmentNumber,
-    required this.date,
-    required this.time,
-    required this.doctorName,
-    required this.specialist,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: InkWell(
-          onTap: () {
-            // Aksi yang dijalankan saat appointment di-tap (misalnya: buka detail appointment)
-            // Tambahkan logika aksi yang sesuai di sini
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: Colors.blue,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.white,
-                  ),
-                  child: AutoSizeText(
-                    date,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: AutoSizeText(
-                    time,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: AutoSizeText(
-                    doctorName,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 4.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: AutoSizeText(
-                    specialist,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// void waktu() async {
-//   var now = DateTime.now();
-//   var formatter = DateFormat('EEEE, dd-MM-yyyy', 'id');
-//   String formattedDate = formatter.format(now);
-// }
-
 class DashboardScreen extends StatefulWidget {
   final PersistentTabController navBarController;
   final int buildScreensLength;
@@ -241,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   height: 200,
                                   child: Card(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(30),
+                                      padding: const EdgeInsets.all(12.5),
                                       child: Column(
                                         children: [
                                           Expanded(
@@ -278,23 +171,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   endTime: DateTime.now()
                                                           .millisecondsSinceEpoch +
                                                       1000 * 60 * 60 * 24,
-                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
                                                   widgetBuilder: (_, time) {
                                                     return AutoSizeText(
-                                                      DateFormat('HH:mm:ss')
+                                                      DateFormat('hh:mm:ss a')
                                                           .format(
-                                                        DateTime.now(),
-                                                      ),
+                                                              DateTime.now()),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
@@ -302,7 +194,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   endTime: DateTime.now()
                                                           .millisecondsSinceEpoch +
                                                       1000 * 60 * 60 * 24,
-                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
                                                   widgetBuilder: (_, time) {
                                                     return AutoSizeText(
                                                       DateFormat(
@@ -317,10 +208,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
