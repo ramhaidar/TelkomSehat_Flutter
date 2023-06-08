@@ -241,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   height: 200,
                                   child: Card(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(30),
+                                      padding: const EdgeInsets.all(12.5),
                                       child: Column(
                                         children: [
                                           Expanded(

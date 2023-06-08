@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'password': password,
         },
       ).timeout(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 3000),
       );
     } catch (e) {
       response = await http.post(
@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'password': password,
         },
       ).timeout(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 3000),
       );
     }
 
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (context.mounted) {
-      if (role == 'Mahasiswa') {
+      if (role == 'Pasien') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const MahasiswaScreen()),

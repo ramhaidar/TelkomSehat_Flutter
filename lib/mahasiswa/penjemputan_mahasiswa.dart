@@ -52,7 +52,7 @@ class _PenjemputanScreenState extends State<PenjemputanScreen> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Container(
-                  margin: const EdgeInsets.only(top: 25, left: 20),
+                  margin: const EdgeInsets.only(top: 25),
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     color: const Color(0xFF6C757D),

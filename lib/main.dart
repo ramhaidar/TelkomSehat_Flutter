@@ -35,7 +35,7 @@ Future<void> main() async {
           'role': role,
         },
       ).timeout(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 3000),
       );
     } catch (e) {
       response = await http.post(
@@ -46,7 +46,7 @@ Future<void> main() async {
           'role': role,
         },
       ).timeout(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 3000),
       );
     }
 
@@ -112,12 +112,13 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   // const MyHomePage({super.key, required this.title});
-  const MyHomePage({Key? key,
-    required this.title,
-    required this.username,
-    required this.stayloggedintoken,
-    required this.role,
-    required this.validLogin})
+  const MyHomePage(
+      {Key? key,
+      required this.title,
+      required this.username,
+      required this.stayloggedintoken,
+      required this.role,
+      required this.validLogin})
       : super(key: key);
 
   final String title;
@@ -163,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
         stayloggedintoken != null &&
         role != null &&
         validLogin == true) {
-      if (role == 'Mahasiswa') {
+      if (role == 'Pasien') {
         return const MahasiswaScreen();
       } else if (role == 'Dokter') {
         return const DokterScreen();
