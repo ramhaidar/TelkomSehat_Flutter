@@ -53,48 +53,28 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
             height: double.infinity,
             color: const Color(0xFFEDF8FE),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Reservasi",
-                          style: TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.pink[50],
+                children: <Widget>[
+                  const SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, right: 16, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Reservasi",
+                            style: TextStyle(
+                                fontSize: 32, fontWeight: FontWeight.bold),
                           ),
-                          child: const Row(
-                            children: [
-                              Icon(
-                                Icons.add,
-                                color: Colors.pink,
-                                size: 20,
-                              ),
-                              SizedBox(width: 2),
-                              Text(
-                                "Buat Reservasi",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 16, right: 16),
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: "Cari...",
@@ -114,37 +94,53 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder: (BuildContext context, int index) {
-                      // Data dummy
-                      final data = {
-                        'dokter': 'Dr. John Doe',
-                        'spesialis': 'Dokter Umum',
-                        'tanggal': '12 Juni 2023',
-                        'jam': '10:00 - 11:00',
-                        'keluhan': 'Sakit kepala',
-                        'status': 'Terkonfirmasi',
-                      };
-
+                    itemCount: 2, // Jumlah data contoh
+                    itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Card(
-                          child: ListTile(
-                            title: Text('Nama:${data['dokter']}'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Spesialis: ${data['spesialis']}'),
-                                Text('Tanggal: ${data['tanggal']}'),
-                                Text('Jam: ${data['jam']}'),
-                                Text('Keluhan: ${data['keluhan']}'),
-                                Text('Status: ${data['status']}'),
-                              ],
-                            ),
-                            trailing: const Text('Batal'),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const ListTile(
+                                title: Text('Nama'),
+                                subtitle: Text('John Doe'),
+                              ),
+                              const ListTile(
+                                title: Text('Keluhan'),
+                                subtitle: Text('Sakit kepala'),
+                              ),
+                              const ListTile(
+                                title: Text('Tanggal'),
+                                subtitle: Text('8 Juni 2023'),
+                              ),
+                              const ListTile(
+                                title: Text('Jam'),
+                                subtitle: Text('14:30'),
+                              ),
+                              ButtonBar(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Logika saat tombol 'Terima' ditekan
+                                      print('Terima ditekan');
+                                    },
+                                    child: const Text('Terima'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Logika saat tombol 'Tolak' ditekan
+                                      print('Tolak ditekan');
+                                    },
+                                    child: const Text('Tolak'),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       );
