@@ -164,7 +164,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 FocusedMenuItem(
                   title: Text(
-                    uname,
+                    "@$uname",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.openSans(
                       fontSize: 12,
