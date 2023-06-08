@@ -21,6 +21,127 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
     super.initState();
   }
 
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+  String? selectedDoctor;
+  TextEditingController keluhanController = TextEditingController();
+
+  Future<void> showReservationPopup() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Pilih Tanggal',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      setState(() {
+                        selectedDate = pickedDate;
+                      });
+                    }
+                  },
+                  child: Text(
+                    selectedDate != null
+                        ? selectedDate.toString().substring(0, 10)
+                        : 'Pilih Tanggal',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Pilih Waktu',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () async {
+                    final TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (pickedTime != null) {
+                      setState(() {
+                        selectedTime = pickedTime;
+                      });
+                    }
+                  },
+                  child: Text(
+                    selectedTime != null
+                        ? selectedTime!.format(context)
+                        : 'Pilih Waktu',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Pilih Dokter',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                DropdownButton<String>(
+                  value: selectedDoctor,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedDoctor = newValue;
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Dr. John Doe',
+                      child: Text('Dr. John Doe'),
+                    ),
+                    // Tambahkan dropdown item dokter lain di sini
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Keluhan',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: keluhanController,
+                  decoration: const InputDecoration(
+                    hintText: 'Masukkan keluhan',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Logika saat tombol 'Simpan' pada pop-up ditekan
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Simpan'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,22 +193,25 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.pink[50],
                           ),
-                          child: const Row(
-                            children: [
-                              Icon(
-                                Icons.add,
-                                color: Colors.pink,
-                                size: 20,
-                              ),
-                              SizedBox(width: 2),
-                              Text(
-                                "Buat Reservasi",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                          child: ElevatedButton(
+                            onPressed: showReservationPopup,
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.pink,
+                                  size: 20,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 2),
+                                Text(
+                                  "Buat Reservasi",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -133,7 +257,7 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Card(
                           child: ListTile(
-                            title: Text('Nama:${data['dokter']}'),
+                            title: Text('Nama: ${data['dokter']}'),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -144,7 +268,36 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                                 Text('Status: ${data['status']}'),
                               ],
                             ),
-                            trailing: const Text('Batal'),
+                            trailing: ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Konfirmasi'),
+                                      content: const Text(
+                                          'Apakah Anda yakin ingin membatalkan?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            // Logika saat tombol 'Ya' pada pop-up konfirmasi ditekan
+                                          },
+                                          child: const Text('Ya'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Batal'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: const Text('Batal'),
+                            ),
                           ),
                         ),
                       );
