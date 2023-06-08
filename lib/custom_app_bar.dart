@@ -3,8 +3,17 @@ import 'package:focused_menu_custom/focused_menu.dart';
 import 'package:focused_menu_custom/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'login_screen.dart';
+
+class PatientData {
+  final String name;
+  final String uname;
+
+  PatientData({required this.name, required this.uname});
+}
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
@@ -17,39 +26,62 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  final List<PopupMenuEntry<dynamic>> menuItems = [
-    PopupMenuItem<dynamic>(
-      value: 'Details',
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Haidaruddin Muhammad Ramdhan',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.openSans(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              '1301204459',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.openSans(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    const PopupMenuItem<dynamic>(
-      value: 'logout',
-      child: Text('Log Out'),
-    ),
-  ];
+  String name = '';
+  String uname = '';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var username = prefs.getString('username') ?? 'null';
+    var role = prefs.getString('role') ?? 'null';
+
+    http.Response response;
+    try {
+      response = await http.post(
+        Uri.parse('http://yntkts.ddns.net:8000/api/dashboard_patient'),
+        body: {
+          'username': username,
+          'role': role,
+        },
+      ).timeout(
+        const Duration(milliseconds: 3000),
+      );
+    } catch (e) {
+      response = await http.post(
+        Uri.parse('http://192.168.3.2:8000/api/dashboard_patient'),
+        body: {
+          'username': username,
+          'role': role,
+        },
+      ).timeout(
+        const Duration(milliseconds: 3000),
+      );
+    }
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final patientData = PatientData(
+        name: data['user']['name'],
+        uname: data['patient']['username'],
+      );
+
+      setState(() {
+        name = patientData.name;
+        uname = patientData.uname;
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false; // Set isLoading to false in case of an error
+      });
+    }
+  }
 
   Future<void> handleMenuSelection(BuildContext context, dynamic value) async {
     switch (value) {
@@ -113,13 +145,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
               duration: const Duration(milliseconds: 100),
               animateMenuItems: true,
               blurBackgroundColor: Colors.black54,
-              openWithTap: true,
+              openWithTap: !isLoading,
               menuOffset: 30,
               bottomOffsetHeight: 80.0,
               menuItems: <FocusedMenuItem>[
                 FocusedMenuItem(
                   title: Text(
-                    'Haidaruddin Muhammad Ramdhan',
+                    name,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.openSans(
                       fontSize: 12,
@@ -132,7 +164,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 FocusedMenuItem(
                   title: Text(
-                    '1301204459',
+                    uname,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.openSans(
                       fontSize: 12,
@@ -165,10 +197,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
               ],
               onPressed: () {},
-              child: const CircleAvatar(
-                backgroundImage:
-                    NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
-              ),
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : const CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
+                    ),
             ),
           ],
         ),
