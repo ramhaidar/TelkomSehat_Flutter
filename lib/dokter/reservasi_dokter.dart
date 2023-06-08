@@ -21,6 +21,38 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
     super.initState();
   }
 
+  Future<void> showConfirmationDialog(String action) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi'),
+          content: Text('Apakah Anda yakin ingin $action reservasi ini?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Logika saat tombol 'Terima' ditekan
+                if (action == 'terima') {
+                  print('Reservasi diterima');
+                } else if (action == 'tolak') {
+                  print('Reservasi ditolak');
+                }
+              },
+              child: const Text('Ya'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tidak'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +126,6 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -126,15 +157,13 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      // Logika saat tombol 'Terima' ditekan
-                                      print('Terima ditekan');
+                                      showConfirmationDialog('terima');
                                     },
                                     child: const Text('Terima'),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      // Logika saat tombol 'Tolak' ditekan
-                                      print('Tolak ditekan');
+                                      showConfirmationDialog('tolak');
                                     },
                                     child: const Text('Tolak'),
                                   ),
