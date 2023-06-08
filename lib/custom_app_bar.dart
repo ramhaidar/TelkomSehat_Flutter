@@ -8,11 +8,11 @@ import 'dart:convert';
 
 import 'login_screen.dart';
 
-class PatientData {
+class UserData {
   final String name;
   final String uname;
 
-  PatientData({required this.name, required this.uname});
+  UserData({required this.name, required this.uname});
 }
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -41,10 +41,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
     var username = prefs.getString('username') ?? 'null';
     var role = prefs.getString('role') ?? 'null';
 
+    String url = '';
+    if (role == "Dokter") {
+      url = 'dashboard_doctor';
+    } else if (role == 'Pasien') {
+      url = 'dashboard_patient';
+    } else if (role == 'Paramedis') {
+      url = 'dashboard_paramedic';
+    }
+
     http.Response response;
     try {
       response = await http.post(
-        Uri.parse('http://yntkts.ddns.net:8000/api/dashboard_patient'),
+        Uri.parse('http://yntkts.ddns.net:8000/api/$url'),
         body: {
           'username': username,
           'role': role,
@@ -54,7 +63,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       );
     } catch (e) {
       response = await http.post(
-        Uri.parse('http://192.168.3.2:8000/api/dashboard_patient'),
+        Uri.parse('http://192.168.3.2:8000/api/$url'),
         body: {
           'username': username,
           'role': role,
@@ -66,16 +75,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final patientData = PatientData(
-        name: data['user']['name'],
-        uname: data['patient']['username'],
-      );
 
-      setState(() {
-        name = patientData.name;
-        uname = patientData.uname;
-        isLoading = false;
-      });
+      if (role == "Dokter") {
+        setState(() {
+          name = data['user']['name'];
+          uname = data['doctor']['username'];
+          isLoading = false;
+        });
+      } else if (role == 'Pasien') {
+        setState(() {
+          name = data['user']['name'];
+          uname = data['patient']['username'];
+          isLoading = false;
+        });
+      } else if (role == 'Paramedis') {
+        setState(() {
+          name = data['user']['name'];
+          uname = data['paramedic']['username'];
+          isLoading = false;
+        });
+      }
     } else {
       setState(() {
         isLoading = false; // Set isLoading to false in case of an error
