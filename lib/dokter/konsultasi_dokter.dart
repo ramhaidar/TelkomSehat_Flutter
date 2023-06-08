@@ -21,6 +21,13 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
     super.initState();
   }
 
+  List<Map<String, dynamic>> data = [
+    {'Nama': 'John Doe', 'Keluhan': 'Keluhan 1'},
+    {'Nama': 'Jane Smith', 'Keluhan': 'Keluhan 2'},
+    {'Nama': 'David Johnson', 'Keluhan': 'Keluhan 3'},
+    // ...
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,45 +62,18 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SafeArea(
+                      const SafeArea(
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 16, top: 10),
+                          padding:
+                              EdgeInsets.only(left: 16, right: 16, top: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              const Text(
+                              Text(
                                 "Konsultasi",
                                 style: TextStyle(
                                     fontSize: 32, fontWeight: FontWeight.bold),
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 2, bottom: 2),
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.pink[50],
-                                ),
-                                child: const Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.pink,
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Text(
-                                      "Tambah",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -119,7 +99,32 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
                                     BorderSide(color: Colors.grey.shade100)),
                           ),
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Nama')),
+                            DataColumn(label: Text('Keluhan')),
+                            DataColumn(label: Text('Aksi')),
+                          ],
+                          rows: List.generate(data.length, (index) {
+                            final item = data[index];
+                            return DataRow(cells: [
+                              DataCell(Text(item['Nama'])),
+                              DataCell(Text(item['Keluhan'])),
+                              DataCell(
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Aksi yang ingin dilakukan saat tombol ditekan
+                                  },
+                                  child: const Text('Balas'),
+                                ),
+                              ),
+                            ]);
+                          }),
+                        ),
+                      ),
                     ],
                   ),
                 ),
