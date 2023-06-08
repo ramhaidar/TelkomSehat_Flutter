@@ -6,10 +6,11 @@ class KonsultasiScreen extends StatefulWidget {
   final PersistentTabController navBarController;
   final int buildScreensLength;
 
-  const KonsultasiScreen(
-      {super.key,
-      required this.navBarController,
-      required this.buildScreensLength});
+  const KonsultasiScreen({
+    super.key,
+    required this.navBarController,
+    required this.buildScreensLength,
+  });
 
   @override
   State<KonsultasiScreen> createState() => _KonsultasiScreenState();
@@ -22,7 +23,7 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
   }
 
   Future<List<Map<String, dynamic>>> _loadItems() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
 
     return [
       {'Keluhan': 'Keluhan 1', 'Jawaban': 'Jawaban 1'},
@@ -128,20 +129,25 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
                               fillColor: Colors.grey.shade100,
                               contentPadding: const EdgeInsets.all(8),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide:
-                                      BorderSide(color: Colors.grey.shade100)),
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade100),
+                              ),
                             ),
                           ),
                         ),
-                        FutureBuilder<List<Map<String, dynamic>>>(
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: FutureBuilder<List<Map<String, dynamic>>>(
                             future: _loadItems(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const CircularProgressIndicator(
-                                  color: Colors.pink,
-                                  strokeWidth: 2,
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.pink,
+                                    strokeWidth: 2,
+                                  ),
                                 );
                               }
                               if (snapshot.hasError) {
@@ -150,17 +156,38 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
                               final items = snapshot.data ?? [];
 
                               return ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
                                 shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
                                   final item = items[index];
-                                  return ListTile(
-                                    title: Text(item['Keluhan']),
-                                    subtitle: Text(item['Jawaban']),
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 3.0),
+                                    child: ListTile(
+                                      trailing:
+                                          const Icon(Icons.arrow_forward_ios),
+                                      onTap: () {},
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                      dense: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        side: const BorderSide(
+                                            color: Colors.grey, width: 3),
+                                      ),
+                                      tileColor: Colors.white,
+                                      title: Text(item['Keluhan']),
+                                      subtitle: Text(item['Jawaban']),
+                                    ),
                                   );
                                 },
                               );
-                            }),
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
