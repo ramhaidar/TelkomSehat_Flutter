@@ -241,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   height: 200,
                                   child: Card(
                                     child: Padding(
-                                      padding: const EdgeInsets.all(30),
+                                      padding: const EdgeInsets.all(12.5),
                                       child: Column(
                                         children: [
                                           Expanded(
@@ -278,23 +278,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   endTime: DateTime.now()
                                                           .millisecondsSinceEpoch +
                                                       1000 * 60 * 60 * 24,
-                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
                                                   widgetBuilder: (_, time) {
                                                     return AutoSizeText(
-                                                      DateFormat('HH:mm:ss')
+                                                      DateFormat('hh:mm:ss a')
                                                           .format(
-                                                        DateTime.now(),
-                                                      ),
+                                                              DateTime.now()),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
@@ -302,7 +301,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   endTime: DateTime.now()
                                                           .millisecondsSinceEpoch +
                                                       1000 * 60 * 60 * 24,
-                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
                                                   widgetBuilder: (_, time) {
                                                     return AutoSizeText(
                                                       DateFormat(
@@ -317,10 +315,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
