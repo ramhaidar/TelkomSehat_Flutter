@@ -21,6 +21,16 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
     super.initState();
   }
 
+  Future<List<Map<String, dynamic>>> _loadItems() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    return [
+      {'Keluhan': 'Keluhan 1', 'Jawaban': 'Jawaban 1'},
+      {'Keluhan': 'Keluhan 2', 'Jawaban': 'Jawaban 2'},
+      {'Keluhan': 'Keluhan 3', 'Jawaban': 'Jawaban 3'},
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,77 +60,109 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
             Expanded(
               child: Container(
                 color: const Color(0xFFEDF8FE),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 16, top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                "Konsultasi",
-                                style: TextStyle(
-                                    fontSize: 32, fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                    left: 8, right: 8, top: 2, bottom: 2),
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.pink[50],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.5, horizontal: 7.5),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                const Text(
+                                  "Konsultasi",
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: const Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.pink,
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Text(
-                                      "Tambah",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 16, left: 16, right: 16),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Cari...",
-                            hintStyle: TextStyle(color: Colors.grey.shade600),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.grey.shade600,
-                              size: 20,
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8, top: 2, bottom: 2),
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.pink[50],
+                                  ),
+                                  child: const Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.pink,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        "Tambah",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
-                            filled: true,
-                            fillColor: Colors.grey.shade100,
-                            contentPadding: const EdgeInsets.all(8),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade100)),
                           ),
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16, left: 16, right: 16),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: "Cari...",
+                              hintStyle: TextStyle(color: Colors.grey.shade600),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.grey.shade600,
+                                size: 20,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                              contentPadding: const EdgeInsets.all(8),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey.shade100)),
+                            ),
+                          ),
+                        ),
+                        FutureBuilder<List<Map<String, dynamic>>>(
+                            future: _loadItems(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator(
+                                  color: Colors.pink,
+                                  strokeWidth: 2,
+                                );
+                              }
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+                              final items = snapshot.data ?? [];
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: items.length,
+                                itemBuilder: (context, index) {
+                                  final item = items[index];
+                                  return ListTile(
+                                    title: Text(item['Keluhan']),
+                                    subtitle: Text(item['Jawaban']),
+                                  );
+                                },
+                              );
+                            }),
+                      ],
+                    ),
                   ),
                 ),
               ),
