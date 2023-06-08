@@ -34,9 +34,9 @@ class _ReservasiScreenState extends State<ReservasiScreen> {
                 Navigator.of(context).pop();
                 // Logika saat tombol 'Terima' ditekan
                 if (action == 'terima') {
-                  print('Reservasi diterima');
+                  // print('Reservasi diterima');
                 } else if (action == 'tolak') {
-                  print('Reservasi ditolak');
+                  // print('Reservasi ditolak');
                 }
               },
               child: const Text('Ya'),

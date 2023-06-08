@@ -219,7 +219,7 @@ class _PenjemputanScreenState extends State<PenjemputanScreen> {
                                             getGoogleMapsLink(
                                                 latitude, longitude);
                                         // Menggunakan googleMapsLink sesuai kebutuhan, misalnya mengirimnya ke layanan peta
-                                        print(googleMapsLink);
+                                        // print(googleMapsLink);
                                       },
                                       icon: const Icon(
                                         Icons.open_in_new,
