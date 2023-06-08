@@ -278,23 +278,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   endTime: DateTime.now()
                                                           .millisecondsSinceEpoch +
                                                       1000 * 60 * 60 * 24,
-                                                  // set waktu akhir countdown ke 24 jam dari waktu sekarang
+                                                  // set the countdown end time to 24 hours from now
                                                   widgetBuilder: (_, time) {
                                                     return AutoSizeText(
-                                                      DateFormat('HH:mm:ss')
+                                                      DateFormat('hh:mm:ss a')
                                                           .format(
-                                                        DateTime.now(),
-                                                      ),
+                                                              DateTime.now()),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
@@ -317,10 +317,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                           GoogleFonts.openSans(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w300,
+                                                            FontWeight.w400,
                                                         color: const Color(
                                                             0xFF012970),
                                                       ),
+                                                      maxLines: 1,
                                                     );
                                                   },
                                                 ),
