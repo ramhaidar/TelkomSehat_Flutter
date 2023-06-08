@@ -8,7 +8,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dokter/aaa_dokter_screen.dart';
-import 'mahasiswa/aaa_mahasiswa_screen.dart';
+import 'pasien/aaa_pasien_screen.dart';
 import 'package:telkom_sehat/paramedis/aaa_paramedis_screen.dart';
 
 class LoginScreen extends StatefulWidget {

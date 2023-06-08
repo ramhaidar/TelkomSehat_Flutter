@@ -10,7 +10,7 @@ import 'package:telkom_sehat/login_screen.dart';
 import 'package:http/http.dart' as http;
 
 import 'dokter/aaa_dokter_screen.dart';
-import 'mahasiswa/aaa_mahasiswa_screen.dart';
+import 'pasien/aaa_pasien_screen.dart';
 import 'paramedis/aaa_paramedis_screen.dart';
 
 Future<void> main() async {

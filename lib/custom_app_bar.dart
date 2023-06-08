@@ -104,7 +104,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             FocusedMenuHolder(
-              menuWidth: MediaQuery.of(context).size.width * 0.55,
+              menuWidth: MediaQuery.of(context).size.width * 0.75,
               blurSize: 1.23,
               menuItemExtent: 35,
               menuBoxDecoration: const BoxDecoration(

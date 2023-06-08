@@ -3,10 +3,10 @@ import 'package:line_icons/line_icons.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:telkom_sehat/custom_app_bar.dart';
 
-import 'dashboard_mahasiswa.dart';
-import 'konsultasi_mahasiswa.dart';
-import 'penjemputan_mahasiswa.dart';
-import 'reservasi_mahasiswa.dart';
+import 'dashboard_pasien.dart';
+import 'konsultasi_pasien.dart';
+import 'penjemputan_pasien.dart';
+import 'reservasi_pasien.dart';
 
 class MahasiswaScreen extends StatefulWidget {
   const MahasiswaScreen({super.key});
