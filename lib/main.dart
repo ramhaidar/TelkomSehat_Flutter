@@ -39,7 +39,7 @@ Future<void> main() async {
       );
     } catch (e) {
       response = await http.post(
-        Uri.parse('http://192.168.3.2:8000/api/mobile_app_token_check'),
+        Uri.parse('http://10.60.224.190:8000/api/mobile_app_token_check'),
         body: {
           'username': username,
           'stayloggedintoken': stayloggedintoken,
@@ -51,7 +51,7 @@ Future<void> main() async {
     }
 
     // response = await http.post(
-    //   Uri.parse('http://192.168.3.2:8000/api/mobile_app_token_check'),
+    //   Uri.parse('http://10.60.224.190:8000/api/mobile_app_token_check'),
     //   body: {
     //     'username': username,
     //     'stayloggedintoken': stayloggedintoken,

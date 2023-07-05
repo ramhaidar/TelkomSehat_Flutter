@@ -63,7 +63,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       );
     } catch (e) {
       response = await http.post(
-        Uri.parse('http://192.168.3.2:8000/api/$url'),
+        Uri.parse('http://10.60.224.190:8000/api/$url'),
         body: {
           'username': username,
           'role': role,
@@ -155,7 +155,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             FocusedMenuHolder(
-              menuWidth: MediaQuery.of(context).size.width * 0.75,
+              menuWidth: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.75,
               blurSize: 1.23,
               menuItemExtent: 35,
               menuBoxDecoration: const BoxDecoration(
@@ -200,7 +203,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   leadingIcon: const Icon(Icons.logout),
                   onPressed: () async {
                     final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
+                    await SharedPreferences.getInstance();
 
                     prefs.remove('stayloggedintoken');
                     prefs.remove('role');
@@ -219,9 +222,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
               child: isLoading
                   ? const CircularProgressIndicator()
                   : const CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
-                    ),
+                backgroundImage:
+                NetworkImage('https://i.imgur.com/yoD9euD.jpg'),
+              ),
             ),
           ],
         ),

@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } catch (e) {
       response = await http.post(
-        Uri.parse('http://192.168.3.2:8000/api/login'),
+        Uri.parse('http://10.60.224.190:8000/api/login'),
         body: {
           'username': username,
           'password': password,
